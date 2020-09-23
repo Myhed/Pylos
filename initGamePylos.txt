@@ -1,0 +1,86 @@
+
+board <== []
+marbles <== []
+
+interface MarblesInterface  {
+    entier[]: marble
+    string: color
+}
+
+CREATE FUNCTION generateMarbles(numberOfPlayer, numberMarblesPerPlayer): array<MarblesInterface>
+    PARAMETER GLOBAUX
+        array<MarblesInterface>: marbles <== []
+    PARAMETER LOCAUX
+        entier: 
+            numberMarblesPerPlayer <== 15,
+            numberOfPlayer <== 2
+    VARIABLES
+        entier: 
+            i <== 0,
+            j <== 0,
+            index <== 0
+    CONSTANTES
+    BEGIN
+        FOR i RANGE 0 to numberOfPlayer
+            marbles[i] = {
+                marble: []
+                color: index === i ? 'white' : 'black'
+            }
+            index = i
+          FOR j RANGE 1 to numberMarblesPerPlayer INCREMENTE 1 DO
+            marbles[i].marble[j] = j
+          END FOR;
+        END FOR;
+        Return marbles
+    END
+       
+CREATE FUNCTION initBoard(row,column): entier[][]
+    PARAMETER GLOBAUX
+        entier: board <== []
+    PARAMETER LOCAUX
+        entier: 
+            row <== 4,
+            column <== 4
+    VARIABLES
+        entier:
+            i <== 0,
+            j <== 0
+    CONSTANTES
+    BEGIN 
+        FOR i RANGE 0 to row INCREMENTE 1 DO
+         board[i] = []
+         FOR j RANGE 0 to column INCREMENTE 1 DO
+            board[i][j] = 0
+         END FOR
+        END FOR
+        RETURN board;
+    END
+
+CREATE PROCEDURE initGame(rowBoard, columnBoard, numberOfPlayer, numberMarblesPerPlayer)
+    PARAMETER GLOBAUX
+    PARAMETER LOCAUX
+        entier:
+            rowBoard,
+            columnBoard,
+            numberOfPlayer,
+            numberMarblesPerPlayer
+    VARIABLES
+        entier:
+            board <== [],
+            marbles <== []
+    CONSTANTES
+    BEGIN
+        IF (rowBoard AND columBoard)
+            board <== initBoard(rowBoard, columnBoard)
+        ELSE
+            board <== initBoard()
+        END IF;
+
+        IF (numberOfPlayer AND numberMarblesPerPlayer)
+            marbles <== generateMarbles(numberOfPlayer, numberMarblesPerPlayer)
+        ELSE
+            marbles <== generateMarbles()
+        END IF;
+        board()
+        marbles()
+    END

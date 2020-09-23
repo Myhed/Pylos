@@ -1,0 +1,7 @@
+ALGORITHME Pylos
+    VARIABLES
+    CONSTANTES
+    BEGIN
+        READ(initGame())
+        DISPLAY(initGame)
+    END
