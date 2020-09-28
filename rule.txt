@@ -1,0 +1,30 @@
+CREATE PROCEDURE verifyBaseBordIsfull()
+    PARAMETER GLOBAUX
+        entier: board[],
+                row,
+                column
+    PARAMETER LOCAUX
+    VARIABLES
+        entier: 
+            i <== 0,
+            j <== 0,
+            k <== 0,
+            countEmptyCase <== 0
+    CONSTANTES
+    BEGIN
+        FOR i RANGE 0 to sizeOf(board) INCREMENTE 1 DO
+            FOR j RANGE 0 to sizeOf(board[i]) INCREMENTE 1 DO
+                FOR k RANGE 0 to sizeOf(board[i][j]) INCREMENTE 1 DO
+                    IF board[i][j][k] === 0
+                        countEmptyCase++ 
+                    END IF;
+                END FOR
+            END FOR
+        END FOR
+
+        IF countEmptyCase < 1
+            row <== row - 1
+            column <== column - 1
+            initBoard(row, column)
+        END IF
+    END

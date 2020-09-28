@@ -1,6 +1,8 @@
 
 board <== []
 marbles <== []
+row = 4
+column = 4
 
 interface MarblesInterface  {
     entier[]: marble
@@ -27,33 +29,54 @@ CREATE FUNCTION generateMarbles(numberOfPlayer, numberMarblesPerPlayer): array<M
                 color: index === i ? 'white' : 'black'
             }
             index = i
-          FOR j RANGE 1 to numberMarblesPerPlayer INCREMENTE 1 DO
-            marbles[i].marble[j] = j
+          FOR j RANGE 0 to numberMarblesPerPlayer INCREMENTE 1 DO
+            marbles[i].marble[j] = j + 1
           END FOR;
         END FOR;
         Return marbles
     END
        
-CREATE FUNCTION initBoard(row,column): entier[][]
+CREATE FUNCTION initBoard(row) entier[][]
     PARAMETER GLOBAUX
         entier: board <== []
     PARAMETER LOCAUX
-        entier: 
-            row <== 4,
-            column <== 4
+        entier: row <== 4
     VARIABLES
         entier:
             i <== 0,
-            j <== 0
     CONSTANTES
     BEGIN 
         FOR i RANGE 0 to row INCREMENTE 1 DO
-         board[i] = []
-         FOR j RANGE 0 to column INCREMENTE 1 DO
-            board[i][j] = 0
-         END FOR
+            board[i] = []
         END FOR
-        RETURN board;
+    END
+CREATE FUNCTION fillAllLevelBoard(board,rowLevelBoard, columnLevelBoard)
+    PARAMETER GLOBAUX
+        entier:
+            row
+            column
+    PARAMETER LOCAUX
+        entier:
+            rowBoard <== 4
+            columnBoard <== 4
+            board <== []
+    VARIABLES
+        entier: 
+            i <== 0;
+            j <== 0;
+            k <== 0;
+    CONSTANTES
+    BEGIN
+        FOR i RANGE 0 to sizeOf(board) INCREMENTE 1 DO
+         FOR j RANGE 0 to rowBoard INCREMENTE 1 DO
+          board[i][j] = []
+          FOR k RANGE 0 to columBoard INCREMENTE 1 DO
+            board[i][j][k] = 0
+          END FOR
+         END
+         rowLevelBoard = rowLevelBoard - 1
+         columnLevelBoard = columnLevelBoard - 1
+        END FOR
     END
 
 CREATE PROCEDURE initGame(rowBoard, columnBoard, numberOfPlayer, numberMarblesPerPlayer)
